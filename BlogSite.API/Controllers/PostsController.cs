@@ -34,7 +34,7 @@ public class PostsController(IPostService _postService): ControllerBase
     [HttpDelete("delete")]
     public IActionResult Delete([FromQuery]Guid id)
     {
-        var result = _postService.Remove(id);
+        var result = _postService.Delete(id);
         return Ok(result);
     }
 

@@ -6,9 +6,9 @@ namespace BlogSite.DataAccess.Contexts;
 
 public class BaseDbContext : DbContext
 {
-    public BaseDbContext(DbContextOptions opt): base(opt)
+    public BaseDbContext(DbContextOptions<BaseDbContext> opt) : base(opt)
     {
-        
+
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

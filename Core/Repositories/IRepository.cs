@@ -12,4 +12,5 @@ public interface IRepository<TEntiy,TId> where TEntiy : Entity<TId>, new()
     TEntiy? Add(TEntiy entity);
 
     TEntiy? Remove(TEntiy entity);
+
 }

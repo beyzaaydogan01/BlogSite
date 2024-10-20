@@ -52,7 +52,7 @@ namespace BlogSite.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 10, 17, 18, 13, 50, 58, DateTimeKind.Local).AddTicks(8354),
+                            CreatedDate = new DateTime(2024, 10, 20, 15, 58, 24, 557, DateTimeKind.Local).AddTicks(2788),
                             Name = "Yazılım"
                         });
                 });

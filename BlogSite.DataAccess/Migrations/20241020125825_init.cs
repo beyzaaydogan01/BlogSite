@@ -6,40 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlogSite.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class relational : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "UpdatedDate",
-                table: "Posts",
-                newName: "UpdatedTime");
-
-            migrationBuilder.RenameColumn(
-                name: "CreatedDate",
-                table: "Posts",
-                newName: "CreateTime");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Posts",
-                newName: "PostId");
-
-            migrationBuilder.AddColumn<long>(
-                name: "Author_Id",
-                table: "Posts",
-                type: "bigint",
-                nullable: false,
-                defaultValue: 0L);
-
-            migrationBuilder.AddColumn<int>(
-                name: "Category_Id",
-                table: "Posts",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -75,6 +46,33 @@ namespace BlogSite.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category_Id = table.Column<int>(type: "int", nullable: false),
+                    Author_Id = table.Column<long>(type: "bigint", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.PostId);
+                    table.ForeignKey(
+                        name: "FK_Posts_Categories_Category_Id",
+                        column: x => x.Category_Id,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId");
+                    table.ForeignKey(
+                        name: "FK_Posts_Users_Author_Id",
+                        column: x => x.Author_Id,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -103,17 +101,7 @@ namespace BlogSite.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "CreateTime", "CategoryName", "UpdatedTime" },
-                values: new object[] { 1, new DateTime(2024, 10, 17, 18, 13, 50, 58, DateTimeKind.Local).AddTicks(8354), "Yazılım", null });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_Author_Id",
-                table: "Posts",
-                column: "Author_Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_Category_Id",
-                table: "Posts",
-                column: "Category_Id");
+                values: new object[] { 1, new DateTime(2024, 10, 20, 15, 58, 24, 557, DateTimeKind.Local).AddTicks(2788), "Yazılım", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_Post_Id",
@@ -125,71 +113,31 @@ namespace BlogSite.DataAccess.Migrations
                 table: "Comments",
                 column: "User_Id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Posts_Categories_Category_Id",
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_Author_Id",
                 table: "Posts",
-                column: "Category_Id",
-                principalTable: "Categories",
-                principalColumn: "CategoryId");
+                column: "Author_Id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Posts_Users_Author_Id",
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_Category_Id",
                 table: "Posts",
-                column: "Author_Id",
-                principalTable: "Users",
-                principalColumn: "UserId");
+                column: "Category_Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Posts_Categories_Category_Id",
-                table: "Posts");
+            migrationBuilder.DropTable(
+                name: "Comments");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Posts_Users_Author_Id",
-                table: "Posts");
+            migrationBuilder.DropTable(
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Comments");
-
-            migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Posts_Author_Id",
-                table: "Posts");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Posts_Category_Id",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "Author_Id",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "Category_Id",
-                table: "Posts");
-
-            migrationBuilder.RenameColumn(
-                name: "UpdatedTime",
-                table: "Posts",
-                newName: "UpdatedDate");
-
-            migrationBuilder.RenameColumn(
-                name: "CreateTime",
-                table: "Posts",
-                newName: "CreatedDate");
-
-            migrationBuilder.RenameColumn(
-                name: "PostId",
-                table: "Posts",
-                newName: "Id");
         }
     }
 }

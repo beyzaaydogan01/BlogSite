@@ -2,16 +2,13 @@
 using BlogSite.Models.Dtos.Posts.Responses;
 using BlogSite.Models.Entities;
 using Core.Responses;
+using Core.Services;
 
 namespace BlogSite.Service.Abstratcts;
 
-public interface IPostService
+public interface IPostService : IService<Post, Guid, PostResponseDto,CreatePostRequest, UpdatePostRequest>
 {
-    ReturnModel<List<PostResponseDto>> GetAll();
-    ReturnModel<PostResponseDto?> GetById(Guid id);
-    ReturnModel<PostResponseDto> Add(CreatePostRequest create);
-
-    ReturnModel<PostResponseDto> Update(UpdatePostRequest updatePost);
-
-    ReturnModel<PostResponseDto> Remove(Guid id);
+    ReturnModel<List<PostResponseDto>> GetAllByCategoryId(int id);
+    ReturnModel<List<PostResponseDto>> GetAllByAuthorId(long authorId);
+    ReturnModel<List<PostResponseDto>> GetAllByTitleContains(string text);
 }
